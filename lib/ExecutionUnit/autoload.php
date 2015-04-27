@@ -7,7 +7,10 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'executionunit\\execution' => '/Execution.php'
+                'executionunit\\configs\\config' => '/Configs/Config.php',
+                'executionunit\\execution' => '/Execution.php',
+                'executionunit\\layers\\simple' => '/Layers/Simple.php',
+                'executionunit\\processing\\logic' => '/Processing/Logic.php'
             );
         }
         $cn = strtolower($class);
