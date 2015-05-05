@@ -10,6 +10,7 @@ spl_autoload_register(
                 'executionunit\\configs\\config' => '/Configs/Config.php',
                 'executionunit\\execution' => '/Execution.php',
                 'executionunit\\layers\\simple' => '/Layers/Simple.php',
+                'executionunit\\processing\\baseversion' => '/Processing/BaseVersion.php',
                 'executionunit\\processing\\logic' => '/Processing/Logic.php',
                 'executionunit\\processing\\version' => '/Processing/Version.php'
             );
