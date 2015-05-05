@@ -33,13 +33,26 @@ abstract class BaseVersion {
     }
 
     /**
+     * Check and return versions list
+     *
+     * @return array
+     */
+    private function _getVersions() {
+        if (count($this->versions)) {
+            return $this->versions;
+        }
+
+        return $this->getVersionList();
+    }
+
+    /**
      * Get Last of Version
      *
      * @return string
      */
     public function getLastVersion()
     {
-        $versions = $this->getVersionList();
+        $versions = $this->_getVersions();
 
         return array_pop($versions);
     }
@@ -51,7 +64,7 @@ abstract class BaseVersion {
      */
     public function getFirstVersion()
     {
-        $versions = $this->getVersionList();
+        $versions = $this->_getVersions();
 
         return array_shift($versions);
     }
@@ -75,7 +88,7 @@ abstract class BaseVersion {
             $endVersion = $this->getLastVersion();
         }
 
-        return $this->_calculateStages($this->versions, $startVersion, $endVersion);
+        return $this->_calculateStages($this->_getVersions(), $startVersion, $endVersion);
     }
 
     /**
