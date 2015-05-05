@@ -5,13 +5,15 @@ namespace ExecutionUnit\Processing;
 /**
  * Class Version
  *
- * @author	Konstantin Ryapolov <kryapolov@yandex.ru>
- * @package ExecutionUnit\Processing
+ * @author    Konstantin Ryapolov <kryapolov@yandex.ru>
+ * @package   ExecutionUnit\Processing
  */
 class Version extends BaseVersion
 {
+    const VERSION_DELIMITER = '_';
 
     /**
+     *
      * {@inheritdoc}
      */
     public function getVersionList()
@@ -33,5 +35,13 @@ class Version extends BaseVersion
         return $versionList;
     }
 
+    /*
+     *
+     * {@inheritdoc}
+     */
+    public function getNameVersion($name)
+    {
+        return str_replace($this::VERSION_DELIMITER, '.', $name);
+    }
 
 }

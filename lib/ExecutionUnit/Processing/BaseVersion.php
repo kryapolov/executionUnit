@@ -88,7 +88,11 @@ abstract class BaseVersion {
             $endVersion = $this->getLastVersion();
         }
 
-        return $this->_calculateStages($this->_getVersions(), $startVersion, $endVersion);
+        return $this->_calculateStages(
+            $this->_getVersions(),
+            $this->getNameVersion($startVersion),
+            $this->getNameVersion($endVersion)
+        );
     }
 
     /**
@@ -105,9 +109,11 @@ abstract class BaseVersion {
 
         $steps = array();
         foreach ($versions as $step) {
+            $stepName =  $this->getNameVersion($step);
+
             if (
-                (version_compare($startVersion, $step, '>') || version_compare($targetVersion, $step, '>='))
-                && $step != $startVersion
+                (version_compare($startVersion, $stepName, '>') || version_compare($targetVersion, $stepName, '>='))
+                && $stepName != $startVersion
             ) {
                 $steps[] = $step;
             }
@@ -123,6 +129,16 @@ abstract class BaseVersion {
      * @return array
      */
     abstract public function getVersionList();
+
+    /**
+     * Transform name to semver
+     * see http://semver.org/spec/v2.0.0.html
+     *
+     * @param mixed $version
+     *
+     * @return string
+     */
+    abstract public function getNameVersion($version);
 
 
 }
