@@ -37,12 +37,23 @@ abstract class BaseVersion {
      *
      * @return array
      */
-    private function _getVersions() {
+    private function _getVersions()
+    {
         if (count($this->versions)) {
             return $this->versions;
         }
 
         return $this->getVersionList();
+    }
+
+    /**
+     * Return current basePath
+     *
+     * @return string
+     */
+    public function getBasePath()
+    {
+        return $this->basePath;
     }
 
     /**
