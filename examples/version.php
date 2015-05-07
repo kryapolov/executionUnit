@@ -6,7 +6,7 @@ require_once('lib/ExecutionUnit/autoload.php');
 $repoBasePath = 'exampleRepo';
 $mainPath = realpath(dirname(__FILE__));
 
-$repoPath =  $mainPath.DIRECTORY_SEPARATOR.$repoBasePath.DIRECTORY_SEPARATOR.'*';
+$repoPath =  $mainPath.DIRECTORY_SEPARATOR.$repoBasePath;
 
 $version = new ExecutionUnit\Processing\Version($repoPath);
 
@@ -16,9 +16,12 @@ echo " Version list: \n\r";
 
 var_export($list);
 
-$diffVersion = $version->getDiff('0.0.1', '0.5.0');
+$firstVersion = '0.0.1';
+$lastVersion = '0.5.0';
 
-echo "\n\r Parametrs Diff version: \n\r";
+$diffVersion = $version->getDiff($firstVersion, $lastVersion);
+
+echo "\n\r Parametrs Diff version: ", $firstVersion, "->", $lastVersion, "\n\r";
 var_export($diffVersion);
 
 $lastVersion = $version->getDiff();

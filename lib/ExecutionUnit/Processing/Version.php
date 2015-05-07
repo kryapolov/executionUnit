@@ -11,7 +11,10 @@ namespace ExecutionUnit\Processing;
 class Version extends BaseVersion
 {
     const VERSION_DELIMITER = '_';
+    const NAMESPACE_PREFIX = '';
+    const NAMESPACE_SEPARATOR = '\\';
 
+    public $list;
     /**
      *
      * {@inheritdoc}
@@ -19,7 +22,7 @@ class Version extends BaseVersion
     public function getVersionList()
     {
         $versionList = array();
-        foreach (glob($this->basePath) as $dirname) {
+        foreach (glob($this->getBasePath().DIRECTORY_SEPARATOR.'*') as $dirname) {
 
             if (!is_file($dirname)) {
                 $toc = explode("/", $dirname);
@@ -30,7 +33,7 @@ class Version extends BaseVersion
         }
 
         $this->versions = $versionList;
-
+        $this->_loadVersionDescription($versionList);
 
         return $versionList;
     }
@@ -41,7 +44,59 @@ class Version extends BaseVersion
      */
     public function getNameVersion($name)
     {
-        return str_replace($this::VERSION_DELIMITER, '.', $name);
+        $nativeForm = str_replace($this::VERSION_DELIMITER, '.', $name);
+        $semverForm = $nativeForm;
+
+        if ($nativeForm[0] == 'v') {
+            $semverForm = substr($nativeForm, 1);
+        }
+
+        return $semverForm;
     }
+
+    /**
+     * Part AL, load logic mapping
+     *
+     * @param $versionList
+     */
+    private function _loadVersionDescription($versionList)
+    {
+
+        $list = array();
+
+        foreach ($this->versions as $version) {
+            $currentDir = $this->getBasePath().DIRECTORY_SEPARATOR.$version.DIRECTORY_SEPARATOR.'*.php';
+
+            foreach (glob($currentDir) as $resource) {
+                $namespace = $version;
+                $key = strtolower($namespace.$this::NAMESPACE_SEPARATOR.basename($resource, '.php'));
+                $list[$key] = $resource;
+            }
+        }
+
+        $this->list = $list;
+
+        spl_autoload_register(array($this, '_loader'));
+
+    }
+
+    /**
+     * Part AL, load logic implement
+     *
+     * @param $class
+     */
+    public function _loader($class)
+    {
+
+        $classes = $this->list;
+        $cn = strtolower($class);
+
+        if (isset($classes[$cn])) {
+            require $classes[$cn];
+        }
+
+    }
+
+
 
 }
