@@ -119,6 +119,7 @@ abstract class BaseVersion {
     {
 
         $steps = array();
+
         foreach ($versions as $step) {
             $stepName =  $this->getNameVersion($step);
 
